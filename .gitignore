@@ -1,0 +1,31 @@
+# Environment files (NEVER commit secrets!)
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+
+# Docker
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+webhook_error.log
+
+# Evolution API data (will be in Docker volumes)
+evolution_instances/
+postgres_data/
