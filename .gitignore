@@ -2,6 +2,9 @@
 .env
 *.env
 
+# Evolution API source (we use Docker image, not source)
+evolution-api/
+
 # Python
 __pycache__/
 *.py[cod]
