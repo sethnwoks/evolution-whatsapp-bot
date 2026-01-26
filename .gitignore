@@ -5,6 +5,13 @@
 # Evolution API source (we use Docker image, not source)
 evolution-api/
 
+# Old development scripts (not needed in production)
+auto_reply.py
+create_instance.py
+test_send.py
+fetch_qr.py
+creatin.txt
+
 # Python
 __pycache__/
 *.py[cod]
