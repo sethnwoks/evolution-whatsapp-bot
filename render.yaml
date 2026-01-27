@@ -1,5 +1,5 @@
 services:
-  # 1. Evolution API Engine
+  # 1. Evolution API Engine - THE HEART
   - type: web
     name: evo-engine
     runtime: image
@@ -7,11 +7,12 @@ services:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
     region: frankfurt
+    # Health check removed to allow for Supabase migrations without timeout
     envVars:
-      - key: PORT
-        value: "8080"
-      - key: SERVER_PORT
-        value: "8080"
+      - key: PORT # Forces Render to listen on 10000
+        value: "10000"
+      - key: SERVER_PORT # Forces Engine to listen on 10000
+        value: "10000"
       - key: AUTHENTICATION_STORE_TYPE
         value: database
       - key: DATABASE_ENABLED
@@ -27,17 +28,18 @@ services:
       - key: AUTHENTICATION_API_KEY
         generateValue: true
 
-  # 2. Python Bot Brain
+  # 2. Python Bot Brain - THE LOGIC
   - type: web
     name: evo-bot
     runtime: docker
     dockerContext: ./bot
-    dockerfilePath: Dockerfile
+    dockerfilePath: bot/Dockerfile # FIXED: Path relative to repo root
     plan: free
     region: frankfurt
+    healthCheckPath: /health
     envVars:
-      - key: PORT
-        value: "8000"
+      - key: PORT # Move bot to Render's favorite port
+        value: "10000"
       - key: SERVER_URL
         fromService:
           name: evo-engine
