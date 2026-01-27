@@ -48,6 +48,6 @@ services:
         fromService:
           name: evolution-api
           type: web
-          property: envVar:AUTHENTICATION_API_KEY
+          envVarKey: AUTHENTICATION_API_KEY # FIXED: Changed 'property' to 'envVarKey'
       - key: INSTANCE_NAME
         value: fire
