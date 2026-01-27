@@ -6,13 +6,13 @@ services:
     image:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
-    healthCheckPath: /health
     region: frankfurt
+    # Health check removed for API because Render is misidentifying the port
     envVars:
       - key: PORT
-        value: "8080" # This tells Render where to find the API!
-      - key: SERVER_URL
-        value: https://evolution-api-YOUR-RANDOM-ID.onrender.com # Update after it deploys
+        value: "8080"
+      - key: SERVER_PORT
+        value: "8080"
       - key: AUTHENTICATION_STORE_TYPE
         value: database
       - key: DATABASE_ENABLED
@@ -21,18 +21,12 @@ services:
         value: postgresql
       - key: DATABASE_CONNECTION_URI
         sync: false
-      - key: DATABASE_SAVE_DATA_INSTANCE
-        value: "true"
-      - key: DATABASE_SAVE_DATA_NEW_MESSAGE
-        value: "true"
       - key: CACHE_REDIS_ENABLED
         value: "true"
       - key: CACHE_REDIS_URI
         sync: false
       - key: AUTHENTICATION_API_KEY
         generateValue: true
-      - key: DATABASE_CONNECTION_CLIENT_NAME
-        value: evolution_cloud
 
   # 2. Python Bot Brain - Your logic
   - type: web
@@ -40,7 +34,7 @@ services:
     runtime: docker
     rootDir: ./bot
     plan: free
-    healthCheckPath: /health
+    healthCheckPath: /health # Keeping this because it's working!
     envVars:
       - key: PORT
         value: "8000"
