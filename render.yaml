@@ -52,13 +52,8 @@ services:
         value: fire
 
   # 3. Manager UI - The Dashboard (Static Site)
-  - type: static
+  - type: web
     name: evolution-manager
     env: static
     buildCommand: "" # Folder is already built in dist/
     publishDir: ./evolution-api/manager/dist
-    headers:
-      - path: /*
-        headers:
-          - key: Access-Control-Allow-Origin
-            value: "*"
