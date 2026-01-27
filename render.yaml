@@ -15,6 +15,8 @@ services:
         value: database
       - key: DATABASE_ENABLED
         value: "true"
+      - key: DATABASE_PROVIDER
+        value: postgresql
       - key: DATABASE_CONNECTION_URI
         sync: false # You will paste your Supabase URL in the Render UI
       - key: DATABASE_SAVE_DATA_INSTANCE
