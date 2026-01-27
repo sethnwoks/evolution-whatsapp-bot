@@ -13,6 +13,8 @@ services:
         value: "8080" # MATCHED: Dockerfile EXPOSE 8080
       - key: SERVER_PORT
         value: "8080" # MATCHED: Evolution API internal port
+      - key: SERVER_TYPE
+        value: http
       - key: AUTHENTICATION_STORE_TYPE
         value: database
       - key: DATABASE_ENABLED
