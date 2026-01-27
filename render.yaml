@@ -10,9 +10,9 @@ services:
     region: frankfurt
     envVars:
       - key: PORT
-        value: "8080"
+        value: "8080" # This tells Render where to find the API!
       - key: SERVER_URL
-        value: https://evolution-api-YOUR-RANDOM-ID.onrender.com # Update this after it deploys!
+        value: https://evolution-api-YOUR-RANDOM-ID.onrender.com # Update after it deploys
       - key: AUTHENTICATION_STORE_TYPE
         value: database
       - key: DATABASE_ENABLED
@@ -38,7 +38,7 @@ services:
   - type: web
     name: evolution-bot
     runtime: docker
-    rootDir: ./bot # Simplified: Treat 'bot' folder as the build home
+    rootDir: ./bot
     plan: free
     healthCheckPath: /health
     envVars:
