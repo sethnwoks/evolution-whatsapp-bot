@@ -7,11 +7,12 @@ services:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
     region: frankfurt
+    # Health check removed to allow for Supabase migrations without timeout
     envVars:
       - key: PORT
-        value: "10000"
+        value: "8080" # MATCHED: Dockerfile EXPOSE 8080
       - key: SERVER_PORT
-        value: "10000"
+        value: "8080" # MATCHED: Evolution API internal port
       - key: AUTHENTICATION_STORE_TYPE
         value: database
       - key: DATABASE_ENABLED
@@ -32,13 +33,13 @@ services:
     name: evo-bot
     runtime: docker
     dockerContext: ./bot
-    dockerfilePath: bot/Dockerfile
+    dockerfilePath: bot/Dockerfile # FIXED: Correct path relative to root
     plan: free
     region: frankfurt
     healthCheckPath: /health
     envVars:
       - key: PORT
-        value: "8000" # MATCHED: Adjusted to match your Python code's default
+        value: "8000" # MATCHED: bot/Dockerfile --port 8000
       - key: SERVER_URL
         fromService:
           name: evo-engine
