@@ -2,8 +2,9 @@ services:
   # 1. Evolution API - The Core Engine
   - type: web
     name: evolution-api
-    env: image
-    image: evoapicloud/evolution-api:latest
+    runtime: image
+    image:
+      url: docker.io/evoapicloud/evolution-api:latest
     plan: free
     healthCheckPath: /health
     region: frankfurt
@@ -15,7 +16,7 @@ services:
       - key: DATABASE_ENABLED
         value: "true"
       - key: DATABASE_CONNECTION_URI
-        sync: false
+        sync: false # You will paste your Supabase URL in the Render UI
       - key: DATABASE_SAVE_DATA_INSTANCE
         value: "true"
       - key: DATABASE_SAVE_DATA_NEW_MESSAGE
@@ -23,16 +24,16 @@ services:
       - key: CACHE_REDIS_ENABLED
         value: "true"
       - key: CACHE_REDIS_URI
-        sync: false
+        sync: false # You will paste your Redis URL in the Render UI
       - key: AUTHENTICATION_API_KEY
-        generateValue: true
+        generateValue: true # Render creates a secure random key for you
       - key: DATABASE_CONNECTION_CLIENT_NAME
         value: evolution_cloud
 
   # 2. Python Bot Brain - Your logic
   - type: web
     name: evolution-bot
-    env: docker
+    runtime: docker
     dockerContext: ./bot
     dockerfilePath: Dockerfile
     plan: free
