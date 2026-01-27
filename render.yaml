@@ -1,5 +1,5 @@
 services:
-  # 1. Evolution API Engine - THE HEART
+  # 1. Evolution API Engine - THE HEART (RE-SYNC FOR SERVER_TYPE)
   - type: web
     name: evo-engine
     runtime: image
