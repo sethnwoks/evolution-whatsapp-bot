@@ -1,3 +1,7 @@
+# Personal Cloud Notes
+CLOUD_DEPLOYMENT_PLAN.md
+README_CLOUD.md
+
 # Environment files (NEVER commit secrets!)
 .env
 *.env

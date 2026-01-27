@@ -1,0 +1,64 @@
+services:
+  # 1. Evolution API - The Core Engine
+  - type: web
+    name: evolution-api
+    env: docker
+    image: evoapicloud/evolution-api:latest
+    plan: free
+    healthCheckPath: /health
+    region: frankfurt # Lower latency for West Africa
+    envVars:
+      - key: SERVER_URL
+        value: https://evolution-api-YOUR-RANDOM-ID.onrender.com # You will update this after first deploy
+      - key: AUTHENTICATION_STORE_TYPE
+        value: database
+      - key: DATABASE_ENABLED
+        value: "true"
+      - key: DATABASE_CONNECTION_URI
+        sync: false # You will paste your Supabase URL in the Render UI
+      - key: DATABASE_SAVE_DATA_INSTANCE
+        value: "true"
+      - key: DATABASE_SAVE_DATA_NEW_MESSAGE
+        value: "true"
+      - key: CACHE_REDIS_ENABLED
+        value: "true"
+      - key: CACHE_REDIS_URI
+        sync: false # You will paste your Upstash URL in the Render UI
+      - key: AUTHENTICATION_API_KEY
+        generateValue: true # Render creates a secure random key for you
+      - key: DATABASE_CONNECTION_CLIENT_NAME
+        value: evolution_cloud
+
+  # 2. Python Bot Brain - Your logic
+  - type: web
+    name: evolution-bot
+    env: docker
+    dockerContext: ./bot
+    dockerfilePath: Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SERVER_URL
+        fromService:
+          name: evolution-api
+          type: web
+          property: host
+      - key: AUTHENTICATION_API_KEY
+        fromService:
+          name: evolution-api
+          type: web
+          property: envVar:AUTHENTICATION_API_KEY
+      - key: INSTANCE_NAME
+        value: fire
+
+  # 3. Manager UI - The Dashboard (Static Site)
+  - type: static
+    name: evolution-manager
+    env: static
+    buildCommand: "" # Folder is already built in dist/
+    publishDir: ./evolution-api/manager/dist
+    headers:
+      - path: /*
+        headers:
+          - key: Access-Control-Allow-Origin
+            value: "*"

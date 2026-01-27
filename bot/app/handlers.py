@@ -47,14 +47,14 @@ def handle_demo() -> str:
 def handle_help() -> str:
     """Show available commands"""
     return """
-📋 *Available Commands:*
+Available Commands:
 
 • hi/hello - Greeting
 • demo - See tech stack
 • status - Check bot status
 • help - Show this message
 
-🚀 More features coming soon!
+ More features coming soon!!!
 """
 
 
