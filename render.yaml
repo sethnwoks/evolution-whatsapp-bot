@@ -1,3 +1,5 @@
+# Render Blueprint for Evolution API + Python Bot
+# This file defines the orchestration between the engine and the brain.
 services:
   # 1. Evolution API - The Core Engine
   - type: web
@@ -7,12 +9,14 @@ services:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
     region: frankfurt
-    # Health check removed for API because Render is misidentifying the port
+    # NO healthCheckPath for API - Allows it to finish migrations on its own time
     envVars:
       - key: PORT
         value: "8080"
       - key: SERVER_PORT
         value: "8080"
+      - key: DATABASE_CONNECTION_CLIENT_NAME
+        value: evolution_production # Fresh ID to trigger re-sync
       - key: AUTHENTICATION_STORE_TYPE
         value: database
       - key: DATABASE_ENABLED
@@ -34,7 +38,7 @@ services:
     runtime: docker
     rootDir: ./bot
     plan: free
-    healthCheckPath: /health # Keeping this because it's working!
+    healthCheckPath: /health # Keeping this as it confirmed the bot is healthy
     envVars:
       - key: PORT
         value: "8000"
