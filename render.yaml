@@ -1,5 +1,5 @@
 services:
-  # 1. Evolution API - THE ENGINE (V2)
+  # 1. Evolution API Engine
   - type: web
     name: evo-engine
     runtime: image
@@ -27,20 +27,20 @@ services:
       - key: AUTHENTICATION_API_KEY
         generateValue: true
 
-  # 2. Python Bot Brain - THE LOGIC (V2)
+  # 2. Python Bot Brain
   - type: web
     name: evo-bot
     runtime: docker
-    rootDir: ./bot
+    dockerContext: ./bot
+    dockerfilePath: Dockerfile
     plan: free
     region: frankfurt
-    healthCheckPath: /health
     envVars:
       - key: PORT
         value: "8000"
       - key: SERVER_URL
         fromService:
-          name: evo-engine # Linked to the new engine name
+          name: evo-engine
           type: web
           property: host
       - key: AUTHENTICATION_API_KEY
