@@ -1,13 +1,12 @@
 services:
-  # 1. Evolution API - THE ENGINE
+  # 1. Evolution API - THE ENGINE (V2)
   - type: web
-    name: evolution-api
+    name: evo-engine
     runtime: image
     image:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
-    region: frankfurt # Lower latency for West Africa
-    # NO healthCheckPath - Stops Render from killing the service during DB setup
+    region: frankfurt
     envVars:
       - key: PORT
         value: "8080"
@@ -28,25 +27,25 @@ services:
       - key: AUTHENTICATION_API_KEY
         generateValue: true
 
-  # 2. Python Bot Brain - THE LOGIC
+  # 2. Python Bot Brain - THE LOGIC (V2)
   - type: web
-    name: evolution-bot
+    name: evo-bot
     runtime: docker
     rootDir: ./bot
     plan: free
-    region: frankfurt # MATCHED: Must be in same region as the API
-    healthCheckPath: /health # Bot starts fast, so health check is fine here
+    region: frankfurt
+    healthCheckPath: /health
     envVars:
       - key: PORT
         value: "8000"
       - key: SERVER_URL
         fromService:
-          name: evolution-api
+          name: evo-engine # Linked to the new engine name
           type: web
           property: host
       - key: AUTHENTICATION_API_KEY
         fromService:
-          name: evolution-api
+          name: evo-engine
           type: web
           envVarKey: AUTHENTICATION_API_KEY
       - key: INSTANCE_NAME
