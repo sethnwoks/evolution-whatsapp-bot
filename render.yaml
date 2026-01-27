@@ -7,11 +7,10 @@ services:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
     region: frankfurt
-    # Health check removed to allow for Supabase migrations without timeout
     envVars:
-      - key: PORT # Forces Render to listen on 10000
+      - key: PORT
         value: "10000"
-      - key: SERVER_PORT # Forces Engine to listen on 10000
+      - key: SERVER_PORT
         value: "10000"
       - key: AUTHENTICATION_STORE_TYPE
         value: database
@@ -33,13 +32,13 @@ services:
     name: evo-bot
     runtime: docker
     dockerContext: ./bot
-    dockerfilePath: bot/Dockerfile # FIXED: Path relative to repo root
+    dockerfilePath: bot/Dockerfile
     plan: free
     region: frankfurt
     healthCheckPath: /health
     envVars:
-      - key: PORT # Move bot to Render's favorite port
-        value: "10000"
+      - key: PORT
+        value: "8000" # MATCHED: Adjusted to match your Python code's default
       - key: SERVER_URL
         fromService:
           name: evo-engine
