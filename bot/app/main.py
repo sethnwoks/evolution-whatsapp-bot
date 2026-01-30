@@ -14,11 +14,11 @@ def post_reply(number: str, text: str):
     try:
         response = requests.post(url, headers=headers, json=payload)
         if response.status_code != 201:
-            print(f"❌ Failed to reply: {response.text}")
+            print(f"Failed to reply to {number}: {response.text}")
         else:
-            print(f"✅ Replied to {number}")
+            print(f"Replied to {number}")
     except Exception as e:
-        print(f"❌ Error sending reply: {e}")
+        print(f"Error sending reply: {e}")
 
 @app.post("/webhook")
 async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
@@ -46,12 +46,12 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
 
             # Ignore own messages
             if not from_me and text:
-                print(f"📩 [{sender}]: {text}")
+                print(f"Message from {sender}: {text}")
                 reply = route_message(text)
                 background_tasks.add_task(post_reply, sender, reply)
 
     except Exception as e:
-        print(f"⚠️ Webhook Error: {e}")
+        print(f"Webhook Error: {e}")
         return {"status": "error", "message": str(e)}
 
     return {"status": "received"}
@@ -67,4 +67,5 @@ async def health_check():
 @app.get("/")
 async def root():
     return {"status": "running"}
+
 
