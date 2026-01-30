@@ -1,5 +1,5 @@
 services:
-  # 1. Evolution API Engine - THE HEART (RE-SYNC FOR SERVER_TYPE)
+  # Evolution API Engine
   - type: web
     name: evo-engine
     runtime: image
@@ -7,12 +7,11 @@ services:
       url: docker.io/evoapicloud/evolution-api:latest
     plan: free
     region: frankfurt
-    # Health check removed to allow for Supabase migrations without timeout
     envVars:
       - key: PORT
-        value: "8080" # MATCHED: Dockerfile EXPOSE 8080
+        value: "8080"
       - key: SERVER_PORT
-        value: "8080" # MATCHED: Evolution API internal port
+        value: "8080"
       - key: SERVER_TYPE
         value: http
       - key: AUTHENTICATION_STORE_TYPE
@@ -29,19 +28,23 @@ services:
         sync: false
       - key: AUTHENTICATION_API_KEY
         generateValue: true
+      - key: N8N_ENABLED
+        value: "true"
+      - key: CHATBOT_ENABLED
+        value: "true"
 
-  # 2. Python Bot Brain - THE LOGIC
+  # Python Bot - Custom Logic Layer
   - type: web
     name: evo-bot
     runtime: docker
     dockerContext: ./bot
-    dockerfilePath: bot/Dockerfile # FIXED: Correct path relative to root
+    dockerfilePath: bot/Dockerfile
     plan: free
     region: frankfurt
     healthCheckPath: /health
     envVars:
       - key: PORT
-        value: "8000" # MATCHED: bot/Dockerfile --port 8000
+        value: "8000"
       - key: SERVER_URL
         fromService:
           name: evo-engine
@@ -55,7 +58,7 @@ services:
       - key: INSTANCE_NAME
         value: fire
 
-  # 3. n8n - THE VISUAL AI BRAIN
+  # n8n - Visual Workflow Engine
   - type: web
     name: n8n-brain
     runtime: image
@@ -68,12 +71,12 @@ services:
         value: "5678"
       - key: N8N_PORT
         value: "5678"
-      # --- RAM OPTIMIZATIONS ---
       - key: EXECUTIONS_PROCESS
         value: main
       - key: N8N_METRICS
         value: "true"
-      # --- DATABASE (Supabase Fixes) ---
+      
+      # Database Configuration
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
@@ -87,10 +90,11 @@ services:
       - key: DB_POSTGRESDB_PASSWORD
         sync: false
       - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
-        value: "false" # CRITICAL: Allows non-strict SSL for Supabase
-      # --- SECURITY & STABILITY ---
+        value: "false" 
+      
+      # Security
       - key: N8N_ENCRYPTION_KEY
-        value: "emigr8_secure_key_2025" # Avoids auto-generation issues
+        value: "emigr8_secure_key_2025" 
       - key: WEBHOOK_URL
         fromService:
           name: n8n-brain
