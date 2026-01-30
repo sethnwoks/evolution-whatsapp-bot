@@ -54,3 +54,41 @@ services:
           envVarKey: AUTHENTICATION_API_KEY
       - key: INSTANCE_NAME
         value: fire
+
+  # 3. n8n - THE VISUAL AI BRAIN
+  - type: web
+    name: n8n-brain
+    runtime: image
+    image:
+      url: docker.io/n8nio/n8n:latest
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: PORT
+        value: "5678"
+      - key: N8N_PORT
+        value: "5678"
+      # --- RAM OPTIMIZATIONS (CRITICAL FOR RENDER FREE) ---
+      - key: EXECUTIONS_PROCESS
+        value: main
+      - key: N8N_METRICS
+        value: "true"
+      # --- DATABASE (Use your Supabase credentials here!) ---
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_DATABASE
+        value: postgres # Update if your Supabase DB name is different
+      - key: DB_POSTGRESDB_HOST
+        sync: false    # Paste your Supabase host in Render Dashboard
+      - key: DB_POSTGRESDB_PORT
+        value: "5432"
+      - key: DB_POSTGRESDB_USER
+        sync: false
+      - key: DB_POSTGRESDB_PASSWORD
+        sync: false
+      # --- WEBHOOK URL ---
+      - key: WEBHOOK_URL
+        fromService:
+          name: n8n-brain
+          type: web
+          property: host

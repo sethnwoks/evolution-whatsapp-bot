@@ -1,6 +1,8 @@
 # Personal Cloud Notes
 CLOUD_DEPLOYMENT_PLAN.md
 README_CLOUD.md
+RENDER_YAML_MASTERCLASS.md
+me.txt
 
 # Environment files (NEVER commit secrets!)
 .env
