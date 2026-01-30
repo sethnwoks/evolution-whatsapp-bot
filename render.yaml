@@ -68,25 +68,29 @@ services:
         value: "5678"
       - key: N8N_PORT
         value: "5678"
-      # --- RAM OPTIMIZATIONS (CRITICAL FOR RENDER FREE) ---
+      # --- RAM OPTIMIZATIONS ---
       - key: EXECUTIONS_PROCESS
         value: main
       - key: N8N_METRICS
         value: "true"
-      # --- DATABASE (Use your Supabase credentials here!) ---
+      # --- DATABASE (Supabase Fixes) ---
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
-        value: postgres # Update if your Supabase DB name is different
+        value: postgres
       - key: DB_POSTGRESDB_HOST
-        sync: false    # Paste your Supabase host in Render Dashboard
+        sync: false
       - key: DB_POSTGRESDB_PORT
         value: "5432"
       - key: DB_POSTGRESDB_USER
         sync: false
       - key: DB_POSTGRESDB_PASSWORD
         sync: false
-      # --- WEBHOOK URL ---
+      - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
+        value: "false" # CRITICAL: Allows non-strict SSL for Supabase
+      # --- SECURITY & STABILITY ---
+      - key: N8N_ENCRYPTION_KEY
+        value: "emigr8_secure_key_2025" # Avoids auto-generation issues
       - key: WEBHOOK_URL
         fromService:
           name: n8n-brain
