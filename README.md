@@ -1,50 +1,88 @@
-# Evolution WhatsApp Bot
+```
+# 🤖 Evolution WhatsApp Bot
 
-## Project Overview
-This project is a WhatsApp automation bot utilizing the Evolution API and FastAPI. It aims to provide seamless interaction and automation of tasks through WhatsApp, enabling users to automate replies, send messages, and manage contacts efficiently.
+> A real-time AI assistant for WhatsApp, built on FastAPI, Evolution API, and a RAG-powered knowledge base.
+## 📖 Overview
 
-## Architecture
-The bot architecture is based on a microservices approach, utilizing FastAPI for building the web services. The Evolution API provides the underlying functionality to interact with WhatsApp, while the bot logic handles user requests and responses.
+Evolution WhatsApp Bot is a real-time conversational AI system that handles multi-turn WhatsApp interactions with persistent memory, semantic knowledge retrieval, and intelligent human escalation. Built for reliability in production environments with full Docker orchestration on Render.
 
-### Components
-- **FastAPI**: Serves as the framework for building the API.
-- **Evolution API**: Facilitates communication with WhatsApp.
-- **Database**: (optional) For storing user interactions and logs.
+## ✨ Features
 
-## Features
-- Automated responses based on user queries.
-- Integration with the Evolution API for WhatsApp messaging.
-- User-friendly setup and configuration.
-- Support for handling media messages.
-- Logging and error handling for improved reliability.
+- 🧠 **Contextual AI Responses:** Gemini-powered replies with full conversation memory via Redis session persistence
+- 📚 **RAG Knowledge Base:** ChromaDB vector store for semantically grounded, document-aware answers
+- 🔄 **Smart Escalation:** n8n sidecar automatically routes complex queries to human agents
+- ⚡ **Webhook Architecture:** FastAPI webhook handler processes incoming WhatsApp messages with sub-second routing
+- 🛡️ **Production Hardened:** Structured logging, error handling, and environment isolation across dev and prod
 
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/sethnwoks/evolution-whatsapp-bot.git
-   cd evolution-whatsapp-bot
-   ```
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Set up the environment variables as required by the Evolution API.
+## 📦 Technologies
 
-## Usage
-- Start the FastAPI server:
-  ```bash
-  uvicorn main:app --reload
-  ```
-- Access the API documentation at `http://127.0.0.1:8000/docs`.
-- Use the available API endpoints to interact with the WhatsApp bot.
+| Layer | Stack |
+|---|---|
+| API Framework | Python, FastAPI |
+| WhatsApp Interface | Evolution API |
+| AI Engine | Google Gemini API |
+| Knowledge Retrieval | ChromaDB, RAG Pipeline |
+| Session Persistence | Redis |
+| Storage | PostgreSQL |
+| Automation | n8n (escalation sidecar) |
+| Infrastructure | Docker, Render |
 
-## Deployment
-This bot can be deployed on various platforms like Heroku, AWS, or any server that supports Python applications.
-1. Create a requirements.txt if deploying on Heroku.
-2. Ensure all environment variables are correctly set before deployment.
+## 🏗️ Architecture
 
-## Contributing
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to get involved.
+```
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+WhatsApp User
+     │
+     ▼
+Evolution API (Webhook)
+     │
+     ▼
+FastAPI Brain
+     ├── Redis (Session State)
+     ├── ChromaDB (RAG Knowledge Base)
+     ├── Gemini API (Response Generation)
+     └── n8n Sidecar (Escalation Logic)
+     │
+     ▼
+PostgreSQL (Persistent Storage)
+```
+
+## 🔧 Configuration
+
+Create a `.env` file in the root directory:
+
+```env
+EVOLUTION_API_URL=your-evolution-api-url
+EVOLUTION_API_KEY=your-api-key
+GEMINI_API_KEY=your-gemini-key
+REDIS_URL=redis://localhost:6379
+DATABASE_URL=postgres://user:pass@localhost:5432/db
+```
+
+## 🚀 Local Setup (Docker)
+
+```bash
+git clone https://github.com/sethnwoks/evolution-whatsapp-bot.git
+cd evolution-whatsapp-bot
+docker-compose up --build
+```
+
+## 🗂️ Repository Structure
+
+```
+.
+├── bot/                  # Core bot logic and message handlers
+├── docker-compose.yml    # Local development orchestration
+├── render.yaml           # Production deployment config
+├── README.md
+└── requirements.txt
+```
+
+## 📄 License
+
+Distributed under the MIT License.
+
+---
+
+Built by Seth Nwokolo.
+```
